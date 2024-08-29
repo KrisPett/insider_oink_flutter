@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_bottom_nav_bar.dart';
 import 'all_games_api.dart';
-import 'all_games_modal.dart';
+import 'all_games_model.dart';
 
 class AllGamesPage extends StatefulWidget {
   const AllGamesPage({super.key});
@@ -34,7 +34,7 @@ class AllGamesPageState extends State<AllGamesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(title: "All Games",),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : allGamesData != null && allGamesData!.games.isNotEmpty
@@ -43,19 +43,11 @@ class AllGamesPageState extends State<AllGamesPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Games',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
                       Expanded(
                         child: ListView.builder(
                           itemCount: allGamesData!.games.length,
                           itemBuilder: (context, index) {
-                            return _buildGameItem(allGamesData!.games[index]);
+                            return _GameItem(allGamesData!.games[index]);
                           },
                         ),
                       ),
@@ -72,7 +64,7 @@ class AllGamesPageState extends State<AllGamesPage> {
     );
   }
 
-  Widget _buildGameItem(Game game) {
+  Widget _GameItem(Game game) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       elevation: 4,
@@ -84,7 +76,11 @@ class AllGamesPageState extends State<AllGamesPage> {
         subtitle: Text('Status: ${game.status}'),
         trailing: const Icon(Icons.arrow_forward_ios),
         onTap: () {
-          print('Tapped on ${game.id}');
+          Navigator.pushNamed(
+            context,
+            '/setup-game',
+            arguments: game.id,
+          );
         },
       ),
     );

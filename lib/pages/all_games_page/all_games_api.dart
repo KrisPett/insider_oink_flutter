@@ -4,12 +4,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
-import 'all_games_modal.dart';
+import 'all_games_model.dart';
 
 final logger = Logger();
 
 const requestMapping = "api/insider";
-var baseUrl = dotenv.env['API_URL'];
+var baseUrl = dotenv.env['BACKEND_API_URL'];
 
 Future<AllGamesModel?> fetchGamesData() async {
   final url = Uri.parse('$baseUrl/$requestMapping/game');
