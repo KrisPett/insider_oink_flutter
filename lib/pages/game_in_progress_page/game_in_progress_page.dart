@@ -89,7 +89,6 @@ class GameInProgressPageState extends State<GameInProgressPage> {
             ),
           ),
 
-          // Bottom input area
           Container(
             color: Colors.grey[300],
             padding: const EdgeInsets.all(16.0),
