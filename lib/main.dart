@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:insider_oink_flutter/pages/SetupGame.dart';
-import 'package:insider_oink_flutter/pages/all_games_page.dart';
+import 'package:insider_oink_flutter/pages/all_games_page/all_games_page.dart';
 import 'package:insider_oink_flutter/pages/home_page.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
