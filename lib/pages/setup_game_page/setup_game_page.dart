@@ -15,6 +15,7 @@ class SetupGamePage extends StatefulWidget {
 class SetupGamePageState extends State<SetupGamePage> {
   SetupGameModel? setupGameModel;
   bool isLoading = true;
+  final TextEditingController _playerNameController = TextEditingController();
 
   @override
   void initState() {
@@ -63,8 +64,64 @@ class SetupGamePageState extends State<SetupGamePage> {
     });
   }
 
+  void _showAddPlayerModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          builder: (_, scrollController) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        final playerName = _playerNameController.text.trim();
+                        onClickAddPlayer(setupGameModel!.id, playerName);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[400],
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                      ),
+                      child: const Text(
+                        'Add player',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _playerNameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Playername...',
+                        filled: true,
+                        fillColor: Colors.grey,
+                      ),
+                      onSubmitted: (value) {
+                        final playerName = value.trim();
+                        onClickAddPlayer(setupGameModel!.id, playerName);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool canStartGame = (setupGameModel?.players.length ?? 0) >= 4;
+
     return Scaffold(
       appBar: const CustomAppBar(title: "Setup Game"),
       body: isLoading
@@ -83,9 +140,7 @@ class SetupGamePageState extends State<SetupGamePage> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      onClickAddPlayer(setupGameModel!.id, "test3");
-                    },
+                    onPressed: _showAddPlayerModal,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey[300],
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -99,11 +154,9 @@ class SetupGamePageState extends State<SetupGamePage> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      onClickStartGame();
-                    },
+                    onPressed: canStartGame ? onClickStartGame : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[300],
+                      backgroundColor: canStartGame ? Colors.green[100] : Colors.red[700],
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     child: const Center(

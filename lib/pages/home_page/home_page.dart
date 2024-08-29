@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
                   'Home',
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 20,
+                    fontSize: 50,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -59,7 +59,7 @@ class HomePageState extends State<HomePage> {
             ],
           ),
           const SizedBox(
-            height: 40,
+            height: 100,
           ),
           Center(
             child: ElevatedButton(

@@ -64,3 +64,22 @@ Future<String?> fetchStartGame(String gameId) async {
     return null;
   }
 }
+
+Future<SetupGameModel?> fetchCreatePlayerToGame(
+    String gameId, String playerName) async {
+  final url = Uri.parse(
+      '$baseUrl/$requestMapping/game/$gameId/join?playerName=$playerName');
+  try {
+    final response = await http.post(url);
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      return SetupGameModel.fromJson(jsonResponse);
+    } else {
+      logger.e('Failed to load games. Status code: ${response.statusCode}');
+      return mockSetupGame;
+    }
+  } catch (e) {
+    logger.e('Error fetching games:', error: e);
+    return mockSetupGame;
+  }
+}
