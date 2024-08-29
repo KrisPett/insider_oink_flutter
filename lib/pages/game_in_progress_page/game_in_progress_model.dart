@@ -157,6 +157,18 @@ final mockGameInProgressModel = GameInProgressModel(
         role: 'Insider',
         isInsider: true,
       ),
+      Player(
+        id: 'player_4',
+        name: 'Lars',
+        role: 'Insider',
+        isInsider: true,
+      ),
+      Player(
+        id: 'player_5',
+        name: 'Emma',
+        role: 'Insider',
+        isInsider: true,
+      ),
     ],
   ),
   chat: Chat(
@@ -182,6 +194,48 @@ final mockGameInProgressModel = GameInProgressModel(
       ),
       Guess(
         id: 'guess_4',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_5',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_6',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_7',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_8',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_9',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_10',
+        message: 'Yes, it is!',
+        playerId: 'player_2',
+        role: 'Moderator',
+      ),
+      Guess(
+        id: 'guess_11',
         message: 'Yes, it is!',
         playerId: 'player_2',
         role: 'Moderator',
