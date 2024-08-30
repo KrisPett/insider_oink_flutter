@@ -11,7 +11,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Check if the current route is "all-games"
     final bool isAllGamesRoute = ModalRoute.of(context)?.settings.name == '/';
 
     return AppBar(
@@ -26,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.white,
       elevation: 0.0,
       centerTitle: true,
-      automaticallyImplyLeading: !isAllGamesRoute,  // Hide back button on "all-games" route
+      automaticallyImplyLeading: !isAllGamesRoute,
     );
   }
 }
