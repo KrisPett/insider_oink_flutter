@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'game_in_progress_model.dart';
 
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_bottom_nav_bar.dart';
+import 'game_in_progress_api.dart';
+import 'game_in_progress_model.dart';
 
 class GameInProgressPage extends StatefulWidget {
   const GameInProgressPage({super.key});
@@ -12,10 +13,56 @@ class GameInProgressPage extends StatefulWidget {
 }
 
 class GameInProgressPageState extends State<GameInProgressPage> {
-  final GameInProgressModel gameInProgress = mockGameInProgressModel;
+  GameInProgressModel? gameInProgress;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final String? gameId =
+          ModalRoute.of(context)?.settings.arguments as String?;
+      if (gameId != null) {
+        loadGamesData(gameId);
+      }
+    });
+  }
+
+  void handleGuessWord(String guess) {
+    fetchGuessWord(gameInProgress!.game.id, guess).then((res) {
+      setState(() {
+        gameInProgress = res;
+      });
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to submit guess: $error')),
+      );
+    });
+  }
+
+  void loadGamesData(String gameId) {
+    fetchGameInProgressData(gameId).then((res) {
+      setState(() {
+        gameInProgress = res;
+        isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (gameInProgress == null) {
+      return const Scaffold(
+        appBar: CustomAppBar(title: "Game in progress"),
+        body: Center(child: Text("Failed to load game data.")),
+        bottomNavigationBar: CustomBottomNavBar(),
+      );
+    }
+
     return Scaffold(
       appBar: const CustomAppBar(title: "Game in progress"),
       body: Column(
@@ -24,52 +71,71 @@ class GameInProgressPageState extends State<GameInProgressPage> {
             padding: const EdgeInsets.all(16.0),
             color: Colors.white,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(gameInProgress.game.id,
+                Expanded(
+                  child: Text(
+                    gameInProgress!.game.id,
                     style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold)),
-                Text('Correct word = ${gameInProgress.game.wordToGuess}',
-                    style: const TextStyle(fontSize: 16)),
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Correct word = ${gameInProgress!.game.wordToGuess}',
+                    style: const TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),
           const Divider(thickness: 1.5),
-
           Expanded(
             flex: 2,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(5.0),
               child: GridView.count(
                 crossAxisCount: 3,
-                mainAxisSpacing: 10,
+                mainAxisSpacing: 0,
                 crossAxisSpacing: 10,
                 childAspectRatio: 1,
-                children: gameInProgress.game.players
+                children: gameInProgress!.game.players
                     .map((player) => _buildPlayerCircle(player))
                     .toList(),
               ),
             ),
           ),
-          const Divider(thickness: 1.5),
-
           Expanded(
             flex: 3,
             child: ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              itemCount: gameInProgress.chat.guesses.length,
+              itemCount: gameInProgress?.chat.guesses.length,
               itemBuilder: (context, index) {
-                return _buildMessageRow(gameInProgress.chat.guesses[index]);
+                return _buildMessageRow(gameInProgress!.chat.guesses[index]);
               },
             ),
           ),
-
+          const Divider(thickness: 1.5),
           Container(
             color: Colors.grey[300],
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Is it ${gameInProgress.game.wordToGuess}',
-              style: const TextStyle(fontSize: 16),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Type your guess here...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              onSubmitted: (value) {
+                if (value.isNotEmpty) {
+                  handleGuessWord(value);
+                }
+              },
             ),
           ),
         ],
@@ -109,7 +175,10 @@ class GameInProgressPageState extends State<GameInProgressPage> {
               color: Colors.grey[300],
               shape: BoxShape.circle,
             ),
-            child: Text(guess.role[0], style: const TextStyle(fontSize: 12)),
+            child: Text(
+              guess.role.isNotEmpty ? guess.role[0] : '?',
+              style: const TextStyle(fontSize: 12),
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(

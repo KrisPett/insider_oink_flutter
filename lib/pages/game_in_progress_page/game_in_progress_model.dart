@@ -108,29 +108,6 @@ class Guess {
   }
 }
 
-class Message {
-  final String id;
-  final String name;
-  final String playerId;
-  final String role;
-
-  Message({
-    required this.id,
-    required this.name,
-    required this.playerId,
-    required this.role,
-  });
-
-  factory Message.fromJson(Map<String, dynamic> json) {
-    return Message(
-      id: json['id'],
-      name: json['name'],
-      playerId: json['playerId'],
-      role: json['role'],
-    );
-  }
-}
-
 // Mock Data
 final mockGameInProgressModel = GameInProgressModel(
   id: 'game_in_progress_1',
@@ -142,13 +119,13 @@ final mockGameInProgressModel = GameInProgressModel(
       Player(
         id: 'player_1',
         name: 'Alice',
-        role: 'Guesser',
+        role: 'COMMONER',
         isInsider: false,
       ),
       Player(
         id: 'player_2',
         name: 'Bob',
-        role: 'Moderator',
+        role: 'COMMONER',
         isInsider: false,
       ),
       Player(
@@ -178,67 +155,67 @@ final mockGameInProgressModel = GameInProgressModel(
         id: 'guess_1',
         message: 'Is it a programming language?',
         playerId: 'player_1',
-        role: 'Guesser',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_2',
         message: 'No, it is not.',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_3',
         message: 'Is it a framework?',
         playerId: 'player_1',
-        role: 'Guesser',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_4',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_5',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_6',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_7',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_8',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_9',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_10',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
       Guess(
         id: 'guess_11',
         message: 'Yes, it is!',
         playerId: 'player_2',
-        role: 'Moderator',
+        role: 'COMMONER',
       ),
     ],
   ),
