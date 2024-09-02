@@ -15,13 +15,15 @@ class GameInProgressPage extends StatefulWidget {
 class GameInProgressPageState extends State<GameInProgressPage> {
   GameInProgressModel? gameInProgress;
   bool isLoading = true;
+  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final String? gameId =
-          ModalRoute.of(context)?.settings.arguments as String?;
+      ModalRoute.of(context)?.settings.arguments as String?;
       if (gameId != null) {
         loadGamesData(gameId);
       }
@@ -32,6 +34,8 @@ class GameInProgressPageState extends State<GameInProgressPage> {
     fetchGuessWord(gameInProgress!.game.id, guess).then((res) {
       setState(() {
         gameInProgress = res;
+        _scrollToBottom();
+        _textEditingController.clear();
       });
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -46,6 +50,18 @@ class GameInProgressPageState extends State<GameInProgressPage> {
         gameInProgress = res;
         isLoading = false;
       });
+    });
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 
@@ -110,6 +126,7 @@ class GameInProgressPageState extends State<GameInProgressPage> {
           Expanded(
             flex: 3,
             child: ListView.builder(
+              controller: _scrollController,
               padding: const EdgeInsets.all(16.0),
               itemCount: gameInProgress?.chat.guesses.length,
               itemBuilder: (context, index) {
@@ -122,6 +139,7 @@ class GameInProgressPageState extends State<GameInProgressPage> {
             color: Colors.grey[300],
             padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _textEditingController,  // Attach the TextEditingController here
               decoration: InputDecoration(
                 hintText: 'Type your guess here...',
                 border: OutlineInputBorder(
