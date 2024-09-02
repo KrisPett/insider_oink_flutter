@@ -1,7 +1,8 @@
 Insider Oink game
 
-<div style="text-align: center;">
+<div style="display: flex; align-items: center; justify-content: center; border: 2px solid;">
     <img src="app.gif" alt="Insider Oink Game" width="200"/>
+    <p>test</p>
 </div>
 
 Setup
