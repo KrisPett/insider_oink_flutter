@@ -1,5 +1,7 @@
 Insider Oink game
 
+![Insider Oink Game](app.gif)
+
 Setup
 
     flutter pub get
@@ -7,4 +9,3 @@ Setup
 - Use Android Studio IDE -> Device Manager (Pixel 5)
 - Run lib/main.dart
 
-![Insider Oink Game](app.gif)
