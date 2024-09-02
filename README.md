@@ -1,7 +1,7 @@
 Insider Oink game
 
 <div style="text-align: center;">
-    <img src="app.gif" alt="Insider Oink Game" width="300"/>
+    <img src="app.gif" alt="Insider Oink Game" width="200"/>
 </div>
 
 Setup
