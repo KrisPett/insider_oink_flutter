@@ -1,6 +1,8 @@
 Insider Oink game
 
-![Insider Oink Game](app.gif)
+[//]: # (![Insider Oink Game]&#40;app.gif&#41;)
+
+<img src="app.gif" alt="Insider Oink Game" width="300"/>
 
 Setup
 
