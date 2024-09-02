@@ -6,3 +6,5 @@ Setup
 
 - Use Android Studio IDE -> Device Manager (Pixel 5)
 - Run lib/main.dart
+
+![Insider Oink Game](app.gif)
